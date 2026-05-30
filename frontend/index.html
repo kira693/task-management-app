@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskMaster Pro</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+    <div id="toast-container"></div>
+    
+    <!-- Navbar -->
+    <nav id="navbar" class="hidden">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="ph ph-check-circle"></i> TaskMaster
+            </div>
+            <div class="nav-links">
+                <span id="user-greeting"></span>
+                <button id="admin-btn" class="nav-btn hidden"><i class="ph ph-shield-check"></i> Admin</button>
+                <button id="logout-btn" class="nav-btn danger"><i class="ph ph-sign-out"></i> Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <main id="app-container">
+        
+        <!-- Auth View -->
+        <section id="auth-view" class="view active">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <h2><i class="ph ph-check-circle"></i> TaskMaster</h2>
+                    <p id="auth-subtitle">Welcome back! Please login to your account.</p>
+                </div>
+                
+                <form id="auth-form">
+                    <div id="register-fields" class="hidden">
+                        <div class="input-group">
+                            <label for="username">Username</label>
+                            <input type="text" id="username" placeholder="Enter your username">
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" required placeholder="name@example.com">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" required placeholder="••••••••">
+                    </div>
+                    
+                    <button type="submit" id="auth-submit-btn" class="btn-primary">Sign In</button>
+                </form>
+                
+                <div class="auth-footer">
+                    <p id="auth-toggle-text">Don't have an account? <a href="#" id="toggle-auth">Sign up</a></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tasks Dashboard View -->
+        <section id="tasks-view" class="view hidden">
+            <div class="dashboard-header">
+                <div>
+                    <h2>My Tasks</h2>
+                    <p>Manage your daily goals and track your progress.</p>
+                </div>
+                <button id="new-task-btn" class="btn-primary"><i class="ph ph-plus"></i> New Task</button>
+            </div>
+            
+            <div class="tasks-container">
+                <div class="tasks-column" id="col-pending">
+                    <h3>To Do <span class="badge" id="count-pending">0</span></h3>
+                    <div class="task-list" id="list-pending"></div>
+                </div>
+                
+                <div class="tasks-column" id="col-in-progress">
+                    <h3>In Progress <span class="badge" id="count-in-progress">0</span></h3>
+                    <div class="task-list" id="list-in_progress"></div>
+                </div>
+                
+                <div class="tasks-column" id="col-completed">
+                    <h3>Completed <span class="badge" id="count-completed">0</span></h3>
+                    <div class="task-list" id="list-completed"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Admin Dashboard View -->
+        <section id="admin-view" class="view hidden">
+            <div class="dashboard-header">
+                <div>
+                    <h2>Admin Dashboard</h2>
+                    <p>System overview and security audit logs.</p>
+                </div>
+                <button id="back-to-tasks-btn" class="btn-secondary"><i class="ph ph-arrow-left"></i> Back to Tasks</button>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="ph ph-users"></i></div>
+                    <div class="stat-info">
+                        <h4>Total Users</h4>
+                        <h2 id="stat-users">0</h2>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="ph ph-list-checks"></i></div>
+                    <div class="stat-info">
+                        <h4>Total Tasks</h4>
+                        <h2 id="stat-tasks">0</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="audit-logs-container">
+                <h3>Audit Logs</h3>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>User</th>
+                                <th>Action</th>
+                                <th>Entity</th>
+                                <th>Details</th>
+                            </tr>
+                        </thead>
+                        <tbody id="audit-logs-body">
+                            <!-- Logs will be injected here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Task Modal -->
+    <div id="task-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Create New Task</h3>
+                <button id="close-modal" class="icon-btn"><i class="ph ph-x"></i></button>
+            </div>
+            <form id="task-form">
+                <input type="hidden" id="task-id">
+                
+                <div class="input-group">
+                    <label for="task-title">Title</label>
+                    <input type="text" id="task-title" required placeholder="What needs to be done?">
+                </div>
+                
+                <div class="input-group">
+                    <label for="task-desc">Description (Optional)</label>
+                    <textarea id="task-desc" rows="3" placeholder="Add more details..."></textarea>
+                </div>
+                
+                <div class="input-group" id="status-group">
+                    <label for="task-status">Status</label>
+                    <select id="task-status">
+                        <option value="pending">To Do</option>
+                        <option value="in_progress">In Progress</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="button" id="cancel-task-btn" class="btn-secondary">Cancel</button>
+                    <button type="submit" class="btn-primary">Save Task</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="api.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
