@@ -71,4 +71,3 @@ This project was built following the **Spec Kit** workflow, demonstrating a stru
 4. **Implement**: Executed the code base systematically.
 
 ---
-*Developed as a demonstration of full-stack engineering and Spec-Driven Development.*
